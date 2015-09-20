@@ -8,43 +8,10 @@
 
 import Foundation
 
-
-protocol TableRowProtocolInternal: TableRowProtocol {
-    
-    
-    static var identifier: String { get }
-
-    static func register(tableView: UITableView)
-    
-    
-    var uniqueIdentifier: String? { get }
-    
-    var estimatedSize: CGSize { get }
-    
-    //
-    var accessoryType: UITableViewCellAccessoryType { get }
-    var selectionStyle: UITableViewCellSelectionStyle { get }
-    var separatorStyle: UITableViewCellSeparatorStyle { get }
-    var separatorInset: UIEdgeInsets { get }
-    var selected: Bool { get }
-    
-    
-    func setRenderer(cell: UITableViewCell?)
-    func getRenderer() -> UITableViewCell?
-    
-    func didSelect(indexPath: NSIndexPath)
-    func accessoryButtonTapped(indexPath: NSIndexPath)
-    
-    func willDisplayCell()
-    func didEndDisplayingCell()
-}
-
 //MARK: - TableRow
 public class TableRow<T: UITableViewCell where T: TableRowRenderer>: NSObject, TableRowProtocol {
     
     public typealias RendererView = T
-    
-    public let uniqueIdentifier: String?
     
     public var estimatedSize: CGSize = CGSizeZero
     public var size: CGSize = CGSizeZero {
@@ -52,6 +19,14 @@ public class TableRow<T: UITableViewCell where T: TableRowRenderer>: NSObject, T
             estimatedSize = size
         }
     }
+    public var indentationLevel: Int = 0
+    
+    public var canMove: Bool = false
+    
+    public private(set) var indexPath: NSIndexPath?
+    
+    public var editingStyle: UITableViewCellEditingStyle = .None
+    public var titleForDeleteConfirmationButton: String = "Delete"
     
     ///
     public var accessoryType: UITableViewCellAccessoryType = .None
@@ -65,8 +40,8 @@ public class TableRow<T: UITableViewCell where T: TableRowRenderer>: NSObject, T
         }
     }
     
-    public internal(set) weak var renderer: RendererView?
-    public internal(set) weak var superview: UITableView?
+    public private(set) weak var renderer: RendererView?
+    public private(set) weak var superview: UITableView?
     
     //
     
@@ -75,37 +50,59 @@ public class TableRow<T: UITableViewCell where T: TableRowRenderer>: NSObject, T
     
     //
     
-    public init(uniqueIdentifier: String? = nil) {
-        self.uniqueIdentifier = uniqueIdentifier
+    public override init() {
         self.estimatedSize.height = UITableViewAutomaticDimension
         self.size.height = UITableViewAutomaticDimension
     }
     
+    public func componentDidMount() {}
+    
+    public func componentWillUnmount() {}
+    
+    public func willDisplayCell() {}
+    
+    public func didEndDisplayingCell() {}
+    
+    
+    
+    public func willSelect(indexPath: NSIndexPath) -> NSIndexPath? { return indexPath }
+
     public func didSelect(indexPath: NSIndexPath) {
         selected = false
         
         didSelectRowAtIndexPath?(indexPath)
     }
     
+    public func willDeselect(indexPath: NSIndexPath) -> NSIndexPath? { return nil }
+    
+    public func didDeselect(indexPath: NSIndexPath) {}
+    
+    
+    
     public func accessoryButtonTapped(indexPath: NSIndexPath) {
         
         accessoryButtonTappedWithIndexPath?(indexPath)
     }
     
-    public func componentDidMount() {
-        
+    public func shouldIndentWhileEditing() -> Bool {
+        if editingStyle == .None {
+            return false
+        }
+        return true
     }
     
-    public func componentWillUnmount() {
-        
-    }
-    
-    public func willDisplayCell() {
-        
-    }
+    public func willBeginEditingRow() {}
 
-    public func didEndDisplayingCell() {
-        
+    public func didEndEditingRow() {}
+    
+    public func editActions() -> [UITableViewRowAction]? { return nil }
+    
+    public func commit(editingStyle editingStyle: UITableViewCellEditingStyle) { Logger?(editingStyle) }
+    
+    
+    
+    public func targetIndexPathForMoveFromRow(indexPath sourceIndexPath: NSIndexPath, toProposedIndexPath proposedDestinationIndexPath: NSIndexPath) -> NSIndexPath {
+        return proposedDestinationIndexPath
     }
 }
 
@@ -124,14 +121,18 @@ extension TableRow: TableRowProtocolInternal {
         RendererView.register(tableView)
     }
     
+    final func setIndexPath(indexPath: NSIndexPath?) {
+        self.indexPath = indexPath
+    }
+    
     final func setRenderer(cell: UITableViewCell?) {
         
         if let cell = cell {
             renderer = cell as? RendererView
             assert(renderer != nil)
-            self.componentDidMount()
+            componentDidMount()
         } else {
-            self.componentWillUnmount()
+            componentWillUnmount()
             renderer = nil
         }
     }

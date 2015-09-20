@@ -8,12 +8,18 @@
 
 import Foundation
 
+public var Logger: ((Any...) -> Void)?
+
 public protocol Component {
     
     var size: CGSize { get }
     
     func componentDidMount()
     func componentWillUnmount()
+    
+}
+
+public extension Component {
     
 }
 

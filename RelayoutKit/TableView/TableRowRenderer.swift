@@ -9,9 +9,23 @@
 import Foundation
 
 //MARK: - TableRowRenderer
-public protocol TableRowRenderer: ComponentRenderer {
+public protocol TableRowRenderer: class, ComponentRenderer {
     
     static var identifier: String { get }
     
     static func register(tableView: UITableView)
+}
+
+public extension TableRowRenderer {
+    
+    static var identifier: String {
+        return "\(self)"
+    }
+    
+    static func register(tableView: UITableView) {
+        tableView.registerNib(
+            UINib(nibName: self.identifier, bundle: nil),
+            forCellReuseIdentifier: self.identifier
+        )
+    }
 }

@@ -27,16 +27,23 @@ class TextTableRow<T: UITableViewCell where T: TableRowRenderer>: TableRow<T> {
         
         renderer?.textLabel?.text = "aaaaa"
     }
+    
+    
 }
 
-let row = TextTableRow<UITableViewCell>()
 
 let tableView = UITableView(frame: CGRect(x: 0, y: 0, width: 320, height: 400), style: .Plain)
 
 tableView.controller(nil, sections: [TableSection()])
 
 
-tableView[section: 0, row: 0] = row
+tableView[section: 0, row: 0] = TextTableRow<UITableViewCell>()
+tableView[section: 0, row: 1] = TextTableRow<UITableViewCell>()
+tableView[section: 0, row: 2] = TextTableRow<UITableViewCell>()
+tableView[section: 0, row: 3] = TextTableRow<UITableViewCell>()
 
 
 let preview = tableView
+
+
+

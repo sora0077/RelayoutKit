@@ -173,13 +173,13 @@
 		D972C27E1BA05F8700D660A7 /* TableView */ = {
 			isa = PBXGroup;
 			children = (
+				D97B120E1BA08C96008A62F6 /* TableController+UIScrollViewDelegate.swift */,
 				D972C2841BA065FA00D660A7 /* TableController.swift */,
 				D97B120C1BA08AD3008A62F6 /* TableController+Cell.swift */,
-				D97B120E1BA08C96008A62F6 /* TableController+UIScrollViewDelegate.swift */,
 				D972C2861BA0661100D660A7 /* TableSection.swift */,
+				D972C28A1BA07AD100D660A7 /* TableRowProtocol.swift */,
 				D972C2811BA0613D00D660A7 /* TableRow.swift */,
 				D972C2881BA07AA900D660A7 /* TableRowRenderer.swift */,
-				D972C28A1BA07AD100D660A7 /* TableRowProtocol.swift */,
 				D972C28C1BA07B0A00D660A7 /* UITableViewCell+RelayoutKit.swift */,
 				D97B12101BA09050008A62F6 /* UITableView+RelayoutKit.swift */,
 				D932FDEF1BA099F3003704FD /* TableTransaction.swift */,
@@ -573,6 +573,7 @@
 				D91CAFDB1BA0B1EA00064013 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D972C25E1BA05F7700D660A7 /* Build configuration list for PBXProject "RelayoutKit" */ = {
 			isa = XCConfigurationList;

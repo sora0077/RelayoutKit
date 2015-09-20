@@ -12,10 +12,6 @@ import RelayoutKit
 
 extension UITableViewCell: TableRowRenderer {
     
-    public static var identifier: String {
-        return "UITableViewCell"
-    }
-    
     public static func register(tableView: UITableView) {
         tableView.registerClass(self, forCellReuseIdentifier: self.identifier)
     }
@@ -23,24 +19,65 @@ extension UITableViewCell: TableRowRenderer {
 
 class TextTableRow<T: UITableViewCell where T: TableRowRenderer>: TableRow<T> {
     
-    override init(uniqueIdentifier: String? = nil) {
-        super.init(uniqueIdentifier: uniqueIdentifier)
+    let text: String
+    
+    init(text: String) {
+        self.text = text
+        super.init()
+        
+        if text == "8" {
+            self.editingStyle = .Delete
+        }
+    
+        print(1)
+    }
+    
+    override func componentDidMount() {
+        super.componentDidMount()
+        
+        renderer?.textLabel?.text = text
+    }
+    
+    override func willDisplayCell() {
+        super.willDisplayCell()
+        
+        renderer?.contentView.transform = CGAffineTransformMakeTranslation(0, -50)
+        UIView.animateWithDuration(0.5) {
+            renderer?.contentView.transform = CGAffineTransformIdentity
+        }
     }
 }
 
 class ViewController: UIViewController {
+    
+    private var tableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        print("\(UITableViewCell.identifier)")
+        
         let tableView = UITableView(frame: self.view.bounds, style: .Plain)
         tableView.controller(self, sections: [TableSection()])
         
-        let row = TextTableRow<UITableViewCell>()
-        tableView[section: 0, row: 0] = row
+        (0..<1000).forEach {
+            tableView.append(TextTableRow<UITableViewCell>(text: "\($0)"), atSection: 0)
+        }
+        
+        
+        tableView[section: 0, row: 1] = TextTableRow<UITableViewCell>(text: "")
         
         self.view.addSubview(tableView)
+        self.tableView = tableView
+        
+        self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    override func setEditing(editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        
+        self.tableView.setEditing(editing, animated: animated)
     }
 
     override func didReceiveMemoryWarning() {

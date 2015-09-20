@@ -8,18 +8,9 @@
 
 import Foundation
 
-private var UITableView_relayoutKit_controller: UInt8 = 0
-extension UITableView {
+public extension UITableView {
     
-    
-    public var sections: [TableSection] {
-        get {
-            return relayoutKit_controller.sections
-        }
-    }
-    
-    
-    public func controller(responder: UIResponder?, sections: [TableSection] = [TableSection()]) {
+    func controller(responder: UIResponder?, sections: [TableSection] = [TableSection()]) {
         
         let controller = TableController(responder: responder, sections: sections)
         
@@ -27,32 +18,40 @@ extension UITableView {
         controller.tableView = self
     }
     
-    public func flush() {
+    func flush() {
         
         relayoutKit_controller.flush()
     }
     
-    public func transaction(block: () -> [TableTransaction]) {
+    func transaction(block: () -> [TableTransaction]) {
         
         relayoutKit_controller.transaction(block)
     }
     
-    public func rows(section: Int) -> [TableRowProtocol] {
-        return relayoutKit_controller.sections[section].internalRows.map {
-            $0 as TableRowProtocol
+    func insert(row: TableRowProtocol, atIndex index: Int, section: Int, animation: UITableViewRowAnimation = .None) {
+        
+        self.transaction {[
+            .Insert(row, atIndex: index, section: section, with: animation)
+            ]
         }
     }
     
-    public subscript(section section: Int) -> TableSection {
-        set {
-            relayoutKit_controller.sections[section] = newValue
-        }
-        get {
-            return relayoutKit_controller.sections[section]
+    func append(row: TableRowProtocol, atSection section: Int, animation: UITableViewRowAnimation = .None) {
+        
+        self.transaction {[
+            .InsertLast(row, section: section, with: animation)
+            ]
         }
     }
     
-    public subscript(section section: Int, row row: Int) -> TableRowProtocol {
+    func extend(rows: [TableRowProtocol], atSetcion section: Int, animation: UITableViewRowAnimation = .None) {
+        
+        self.transaction {
+            rows.map { .InsertLast($0, section: section, with: animation) }
+        }
+    }
+    
+    subscript(section section: Int, row row: Int) -> TableRowProtocol {
         set {
             self[section: section, row: row, animation: .None] = newValue
         }
@@ -61,14 +60,14 @@ extension UITableView {
         }
     }
     
-    public subscript(section section: Int, row row: Int, animation animation: UITableViewRowAnimation) -> TableRowProtocol {
+    subscript(section section: Int, row row: Int, animation animation: UITableViewRowAnimation) -> TableRowProtocol {
         set {
             if relayoutKit_controller.sections[section].rows.count == row {
-                relayoutKit_controller.transaction {[
+                self.transaction {[
                     .InsertLast(newValue, section: section, with: animation)
                 ]}
             } else {
-                relayoutKit_controller.transaction {[
+                self.transaction {[
                     .Replacement(newValue, atIndex: row, section: section, with: animation)
                 ]}
             }
@@ -78,7 +77,7 @@ extension UITableView {
         }
     }
     
-    public subscript(indexPath indexPath: NSIndexPath) -> TableRowProtocol {
+    subscript(indexPath indexPath: NSIndexPath) -> TableRowProtocol {
         set {
             self[section: indexPath.section, row: indexPath.row] = newValue
         }
@@ -86,6 +85,11 @@ extension UITableView {
             return self[section: indexPath.section, row: indexPath.row]
         }
     }
+    
+}
+
+private var UITableView_relayoutKit_controller: UInt8 = 0
+extension UITableView {
     
     var relayoutKit_controller: TableController! {
         set {
