@@ -8,7 +8,11 @@
 
 import Foundation
 
-public var Logger: ((Any...) -> Void)?
+var logger: ((Any...) -> Void)?
+
+public func Logger(v: (Any...) -> Void) {
+    logger = v
+}
 
 public protocol Component {
     
@@ -32,6 +36,15 @@ public protocol ComponentRenderer {
 class Wrapper<T> {
     
     let value: T
+    
+    init(_ v: T) {
+        value = v
+    }
+}
+
+class Weak<T: AnyObject> {
+    
+    weak var value: T?
     
     init(_ v: T) {
         value = v

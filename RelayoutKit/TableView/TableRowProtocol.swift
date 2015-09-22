@@ -12,7 +12,10 @@ import Foundation
 public protocol TableRowProtocol: Component {
     
     var active: Bool { get }
+    var outdated: Bool { get }
+    
     var indexPath: NSIndexPath? { get }
+    var superview: UITableView? { get }
 }
 
 
@@ -38,8 +41,8 @@ protocol TableRowProtocolInternal:
     var selected: Bool { get }
     
     //
-    
-    
+    func setOutdated(outdated: Bool)
+    func setSuperview(superview: UITableView?)
     func setIndexPath(indexPath: NSIndexPath?)
     
     func setRenderer(cell: UITableViewCell?)
@@ -98,4 +101,6 @@ protocol TableRowProtocolInternalReorderingTableRows {
 
     var canMove: Bool { get }
     
+    func willMove(to to: TableRowProtocol) -> Bool
+    func willMove(from from: TableRowProtocol) -> Bool
 }

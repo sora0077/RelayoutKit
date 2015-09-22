@@ -18,10 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
-        Logger = { (args: Any...) in
+        Logger { (args: Any...) in
+            
             print(args)
         }
-        
         return true
     }
 

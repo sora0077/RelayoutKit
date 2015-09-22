@@ -15,6 +15,7 @@ extension TableController {
     func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let row = sections[indexPath.section].internalRows[indexPath.row]
         row.setIndexPath(indexPath)
+        row.setSuperview(tableView)
         return row.estimatedSize.height
     }
     
@@ -42,6 +43,8 @@ extension TableController {
         
         cell.relayoutKit_row = Wrapper(row)
         row.setRenderer(cell)
+        row.setSuperview(tableView)
+        row.setIndexPath(indexPath)
         
         return cell
     }
@@ -146,6 +149,13 @@ extension TableController {
     }
 }
 
+private extension TableController {
+    
+    func row(indexPath: NSIndexPath) -> TableRowProtocolInternal {
+        return sections[indexPath.section].internalRows[indexPath.row]
+    }
+}
+
 extension TableController {
     
     func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -154,7 +164,24 @@ extension TableController {
         return row.canMove
     }
     
+    func tableView(tableView: UITableView, targetIndexPathForMoveFromRowAtIndexPath sourceIndexPath: NSIndexPath, toProposedIndexPath proposedDestinationIndexPath: NSIndexPath) -> NSIndexPath {
+        
+        let source = row(sourceIndexPath)
+        let destination = row(proposedDestinationIndexPath)
+        
+        if source.canMove && destination.canMove {
+            if source.willMove(to: destination) && destination.willMove(from: source) {
+                return proposedDestinationIndexPath
+            }
+        }
+        return sourceIndexPath
+    }
+    
     func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
         
+        let source = row(sourceIndexPath)
+        
+        sections[sourceIndexPath.section].removeAtIndex(sourceIndexPath.row)
+        sections[destinationIndexPath.section].insert(source, atIndex: destinationIndexPath.row)
     }
 }

@@ -28,8 +28,6 @@ class TextTableRow<T: UITableViewCell where T: TableRowRenderer>: TableRow<T> {
         if text == "8" {
             self.editingStyle = .Delete
         }
-    
-        print(1)
     }
     
     override func componentDidMount() {
@@ -41,10 +39,16 @@ class TextTableRow<T: UITableViewCell where T: TableRowRenderer>: TableRow<T> {
     override func willDisplayCell() {
         super.willDisplayCell()
         
-        renderer?.contentView.transform = CGAffineTransformMakeTranslation(0, -50)
-        UIView.animateWithDuration(0.5) {
-            renderer?.contentView.transform = CGAffineTransformIdentity
-        }
+//        renderer?.contentView.transform = CGAffineTransformMakeTranslation(0, -50)
+//        UIView.animateWithDuration(0.5) {
+//            renderer?.contentView.transform = CGAffineTransformIdentity
+//        }
+    }
+    
+    override func didSelect(indexPath: NSIndexPath) {
+        super.didSelect(indexPath)
+        
+        size.height = 100
     }
 }
 
@@ -55,8 +59,6 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
-        print("\(UITableViewCell.identifier)")
         
         let tableView = UITableView(frame: self.view.bounds, style: .Plain)
         tableView.controller(self, sections: [TableSection()])

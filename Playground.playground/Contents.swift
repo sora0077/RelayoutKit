@@ -7,10 +7,6 @@ import XCPlayground
 
 extension UITableViewCell: TableRowRenderer {
     
-    public static var identifier: String {
-        return "Cell"
-    }
-    
     public static func register(tableView: UITableView) {
         tableView.registerClass(self, forCellReuseIdentifier: self.identifier)
     }
@@ -18,8 +14,8 @@ extension UITableViewCell: TableRowRenderer {
 
 class TextTableRow<T: UITableViewCell where T: TableRowRenderer>: TableRow<T> {
     
-    override init(uniqueIdentifier: String? = nil) {
-        super.init(uniqueIdentifier: uniqueIdentifier)
+    override init() {
+        super.init()
     }
     
     override func componentDidMount() {
@@ -32,7 +28,7 @@ class TextTableRow<T: UITableViewCell where T: TableRowRenderer>: TableRow<T> {
 }
 
 
-let tableView = UITableView(frame: CGRect(x: 0, y: 0, width: 320, height: 400), style: .Plain)
+let tableView = UITableView(frame: CGRect(x: 0, y: 0, width: 320, height: 300), style: .Plain)
 
 tableView.controller(nil, sections: [TableSection()])
 

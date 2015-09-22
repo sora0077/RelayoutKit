@@ -28,26 +28,45 @@ public extension UITableView {
         relayoutKit_controller.transaction(block)
     }
     
+    func transaction(block: () -> TableTransaction?) {
+        
+        relayoutKit_controller.transaction({ block().map { [$0] } ?? [] })
+    }
+    
     func insert(row: TableRowProtocol, atIndex index: Int, section: Int, animation: UITableViewRowAnimation = .None) {
         
-        self.transaction {[
+        transaction {
             .Insert(row, atIndex: index, section: section, with: animation)
-            ]
         }
     }
     
     func append(row: TableRowProtocol, atSection section: Int, animation: UITableViewRowAnimation = .None) {
         
-        self.transaction {[
+        transaction {
             .InsertLast(row, section: section, with: animation)
-            ]
         }
     }
     
     func extend(rows: [TableRowProtocol], atSetcion section: Int, animation: UITableViewRowAnimation = .None) {
         
-        self.transaction {
+        transaction {
             rows.map { .InsertLast($0, section: section, with: animation) }
+        }
+    }
+    
+    func remove(row: TableRowProtocol, animation: UITableViewRowAnimation = .None) {
+        
+        transaction {
+            .Remove(row, with: animation)
+        }
+    }
+    
+    func reload(row: TableRowProtocol, animation: UITableViewRowAnimation = .None) {
+        
+        transaction {
+            row.indexPath.map {
+                .Replacement(row, atIndex: $0.row, section: $0.section, with: animation)
+            }
         }
     }
     
@@ -63,13 +82,11 @@ public extension UITableView {
     subscript(section section: Int, row row: Int, animation animation: UITableViewRowAnimation) -> TableRowProtocol {
         set {
             if relayoutKit_controller.sections[section].rows.count == row {
-                self.transaction {[
-                    .InsertLast(newValue, section: section, with: animation)
-                ]}
+                insert(newValue, atIndex: row, section: section)
             } else {
-                self.transaction {[
+                transaction {
                     .Replacement(newValue, atIndex: row, section: section, with: animation)
-                ]}
+                }
             }
         }
         get {

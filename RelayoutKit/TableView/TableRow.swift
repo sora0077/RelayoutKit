@@ -17,6 +17,9 @@ public class TableRow<T: UITableViewCell where T: TableRowRenderer>: NSObject, T
     public var size: CGSize = CGSizeZero {
         didSet {
             estimatedSize = size
+            if oldValue.height != size.height {
+                superview?.reload(self)
+            }
         }
     }
     public var indentationLevel: Int = 0
@@ -24,6 +27,7 @@ public class TableRow<T: UITableViewCell where T: TableRowRenderer>: NSObject, T
     public var canMove: Bool = false
     
     public private(set) var indexPath: NSIndexPath?
+    public private(set) var outdated: Bool = true
     
     public var editingStyle: UITableViewCellEditingStyle = .None
     public var titleForDeleteConfirmationButton: String = "Delete"
@@ -41,7 +45,11 @@ public class TableRow<T: UITableViewCell where T: TableRowRenderer>: NSObject, T
     }
     
     public private(set) weak var renderer: RendererView?
-    public private(set) weak var superview: UITableView?
+    public private(set) weak var superview: UITableView? {
+        didSet {
+            outdated = superview == nil
+        }
+    }
     
     //
     
@@ -97,13 +105,20 @@ public class TableRow<T: UITableViewCell where T: TableRowRenderer>: NSObject, T
     
     public func editActions() -> [UITableViewRowAction]? { return nil }
     
-    public func commit(editingStyle editingStyle: UITableViewCellEditingStyle) { Logger?(editingStyle) }
+    public func commit(editingStyle editingStyle: UITableViewCellEditingStyle) {
     
-    
-    
-    public func targetIndexPathForMoveFromRow(indexPath sourceIndexPath: NSIndexPath, toProposedIndexPath proposedDestinationIndexPath: NSIndexPath) -> NSIndexPath {
-        return proposedDestinationIndexPath
+        switch editingStyle {
+        case .Delete:
+            self.superview?.remove(self)
+        default:
+            break
+        }
     }
+    
+    
+    public func willMove(to to: TableRowProtocol) -> Bool { return true }
+    
+    public func willMove(from from: TableRowProtocol) -> Bool { return true }
 }
 
 public extension TableRow {
@@ -119,6 +134,14 @@ extension TableRow: TableRowProtocolInternal {
     
     static func register(tableView: UITableView) {
         RendererView.register(tableView)
+    }
+    
+    final func setOutdated(flag: Bool) {
+        outdated = flag
+    }
+    
+    final func setSuperview(superview: UITableView?) {
+        self.superview = superview
     }
     
     final func setIndexPath(indexPath: NSIndexPath?) {
