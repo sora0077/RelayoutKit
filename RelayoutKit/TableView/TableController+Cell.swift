@@ -26,20 +26,47 @@ extension TableController {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
+        let prev = sections[indexPath.section].internalRows[safe: indexPath.row - 1]
+        let next = sections[indexPath.section].internalRows[safe: indexPath.row + 1]
+        
         let row = sections[indexPath.section].internalRows[indexPath.row]
         let clazz = row.dynamicType
         
         let identifier = clazz.identifier
+        let first: Bool
         if !registeredCells.contains(identifier) {
             clazz.register(tableView)
             registeredCells.insert(identifier)
+            first = true
+        } else {
+            first = false
         }
         
         let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
         
+        cell.indentationLevel = row.indentationLevel
+        cell.indentationWidth = row.indentationWidth
         cell.accessoryType = row.accessoryType
         cell.selectionStyle = row.selectionStyle
         cell.selected = row.selected
+        
+        func applySeparatorStyle(style: UITableViewCellSeparatorStyle) {
+            
+            switch style {
+            case .None:
+                cell.separatorInset.right = tableView.frame.width - cell.separatorInset.left
+            default:
+                cell.separatorInset = row.separatorInset
+            }
+        }
+        
+        if let style = prev?.nextSeparatorStyle {
+            applySeparatorStyle(style)
+        } else if let style = next?.previousSeparatorStyle {
+            applySeparatorStyle(style)
+        } else {
+            applySeparatorStyle(row.separatorStyle)
+        }
         
         cell.relayoutKit_row = Wrapper(row)
         row.setRenderer(cell)

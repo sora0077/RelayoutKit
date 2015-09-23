@@ -16,6 +16,10 @@ public protocol TableRowProtocol: Component {
     
     var indexPath: NSIndexPath? { get }
     var superview: UITableView? { get }
+    
+    func reload(animated animated: UITableViewRowAnimation)
+    func replace(to to: TableRowProtocol, animated: UITableViewRowAnimation)
+    func remove(animated animated: UITableViewRowAnimation)
 }
 
 
@@ -38,6 +42,9 @@ protocol TableRowProtocolInternal:
     var selectionStyle: UITableViewCellSelectionStyle { get }
     var separatorStyle: UITableViewCellSeparatorStyle { get }
     var separatorInset: UIEdgeInsets { get }
+    
+    var previousSeparatorStyle: UITableViewCellSeparatorStyle? { get }
+    var nextSeparatorStyle: UITableViewCellSeparatorStyle? { get }
     var selected: Bool { get }
     
     //
@@ -59,6 +66,7 @@ protocol TableRowProtocolInternalConfiguringRowsForTheTableView {
     
     var estimatedSize: CGSize { get }
     var indentationLevel: Int { get }
+    var indentationWidth: CGFloat { get }
     
     func willDisplayCell()
     func didEndDisplayingCell()

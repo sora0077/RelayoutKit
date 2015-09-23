@@ -9,7 +9,6 @@
 import UIKit
 import RelayoutKit
 
-
 extension UITableViewCell: TableRowRenderer {
     
     public static func register(tableView: UITableView) {
@@ -25,8 +24,9 @@ class TextTableRow<T: UITableViewCell where T: TableRowRenderer>: TableRow<T> {
         self.text = text
         super.init()
         
-        if text == "8" {
-            self.editingStyle = .Delete
+        if let n = Int(text) where n % 4 == 0 {
+            editingStyle = .Delete
+            previousSeparatorStyle = .Some(.None)
         }
     }
     
@@ -34,6 +34,13 @@ class TextTableRow<T: UITableViewCell where T: TableRowRenderer>: TableRow<T> {
         super.componentDidMount()
         
         renderer?.textLabel?.text = text
+        print(text, " did mount")
+    }
+    
+    override func componentWillUnmount() {
+        super.componentDidMount()
+        
+        print(text, " will unmount")
     }
     
     override func willDisplayCell() {

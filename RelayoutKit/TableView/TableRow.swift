@@ -23,6 +23,7 @@ public class TableRow<T: UITableViewCell where T: TableRowRenderer>: NSObject, T
         }
     }
     public var indentationLevel: Int = 0
+    public var indentationWidth: CGFloat = 10
     
     public var canMove: Bool = false
     
@@ -36,8 +37,13 @@ public class TableRow<T: UITableViewCell where T: TableRowRenderer>: NSObject, T
     public var accessoryType: UITableViewCellAccessoryType = .None
     ///
     public var selectionStyle: UITableViewCellSelectionStyle = .Default
+    
     public var separatorStyle: UITableViewCellSeparatorStyle = .SingleLine // SingleLineEtched is not supported
     public var separatorInset: UIEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 0)
+    
+    public var previousSeparatorStyle: UITableViewCellSeparatorStyle? // if value is not nil, `separatorStyle` is ignored
+    public var nextSeparatorStyle: UITableViewCellSeparatorStyle? // if value is not nil, `separatorStyle` is ignored
+    
     public var selected: Bool = false {
         didSet {
             renderer?.selected = selected
@@ -109,7 +115,7 @@ public class TableRow<T: UITableViewCell where T: TableRowRenderer>: NSObject, T
     
         switch editingStyle {
         case .Delete:
-            self.superview?.remove(self)
+            remove()
         default:
             break
         }
@@ -125,6 +131,18 @@ public extension TableRow {
     
     var active: Bool {
         return renderer != nil
+    }
+    
+    func reload(animated animated: UITableViewRowAnimation = .Automatic) {
+        superview?.reload(self, animation: animated)
+    }
+    
+    func replace(to to: TableRowProtocol, animated: UITableViewRowAnimation = .Automatic) {
+        superview?.replace(from: self, to: to, animation: animated)
+    }
+    
+    func remove(animated animated: UITableViewRowAnimation = .Automatic) {
+        superview?.remove(self, animation: animated)
     }
 }
 
@@ -155,7 +173,9 @@ extension TableRow: TableRowProtocolInternal {
             assert(renderer != nil)
             componentDidMount()
         } else {
-            componentWillUnmount()
+            if renderer != nil {
+                componentWillUnmount()
+            }
             renderer = nil
         }
     }

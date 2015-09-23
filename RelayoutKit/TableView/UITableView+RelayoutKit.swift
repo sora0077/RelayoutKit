@@ -8,6 +8,8 @@
 
 import Foundation
 
+private let defaultAnimation: UITableViewRowAnimation = .None
+
 public extension UITableView {
     
     func controller(responder: UIResponder?, sections: [TableSection] = [TableSection()]) {
@@ -33,39 +35,48 @@ public extension UITableView {
         relayoutKit_controller.transaction({ block().map { [$0] } ?? [] })
     }
     
-    func insert(row: TableRowProtocol, atIndex index: Int, section: Int, animation: UITableViewRowAnimation = .None) {
+    func insert(row: TableRowProtocol, atIndex index: Int, section: Int, animation: UITableViewRowAnimation = defaultAnimation) {
         
         transaction {
             .Insert(row, atIndex: index, section: section, with: animation)
         }
     }
     
-    func append(row: TableRowProtocol, atSection section: Int, animation: UITableViewRowAnimation = .None) {
+    func append(row: TableRowProtocol, atSection section: Int, animation: UITableViewRowAnimation = defaultAnimation) {
         
         transaction {
             .InsertLast(row, section: section, with: animation)
         }
     }
     
-    func extend(rows: [TableRowProtocol], atSetcion section: Int, animation: UITableViewRowAnimation = .None) {
+    func extend(rows: [TableRowProtocol], atSetcion section: Int, animation: UITableViewRowAnimation = defaultAnimation) {
         
         transaction {
             rows.map { .InsertLast($0, section: section, with: animation) }
         }
     }
     
-    func remove(row: TableRowProtocol, animation: UITableViewRowAnimation = .None) {
+    func remove(row: TableRowProtocol, animation: UITableViewRowAnimation = defaultAnimation) {
         
         transaction {
             .Remove(row, with: animation)
         }
     }
     
-    func reload(row: TableRowProtocol, animation: UITableViewRowAnimation = .None) {
+    func reload(row: TableRowProtocol, animation: UITableViewRowAnimation = defaultAnimation) {
         
         transaction {
             row.indexPath.map {
                 .Replacement(row, atIndex: $0.row, section: $0.section, with: animation)
+            }
+        }
+    }
+    
+    func replace(from from: TableRowProtocol, to: TableRowProtocol, animation: UITableViewRowAnimation = defaultAnimation) {
+        
+        transaction {
+            from.indexPath.map {
+                .Replacement(to, atIndex: $0.row, section: $0.section, with: animation)
             }
         }
     }
