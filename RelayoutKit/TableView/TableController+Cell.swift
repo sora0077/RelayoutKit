@@ -26,23 +26,29 @@ extension TableController {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let prev = sections[indexPath.section].internalRows[safe: indexPath.row - 1]
-        let next = sections[indexPath.section].internalRows[safe: indexPath.row + 1]
-        
         let row = sections[indexPath.section].internalRows[indexPath.row]
         let clazz = row.dynamicType
         
         let identifier = clazz.identifier
-        let first: Bool
         if !registeredCells.contains(identifier) {
             clazz.register(tableView)
             registeredCells.insert(identifier)
-            first = true
-        } else {
-            first = false
         }
         
         let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
+        if cell.relayoutKit_defaultSeparatorInset == nil {
+            cell.relayoutKit_defaultSeparatorInset = Wrapper(cell.separatorInset)
+        }
+        
+        updateCell(cell, indexPath: indexPath, row: row)
+        
+        return cell
+    }
+    
+    private func updateCell(cell: UITableViewCell, indexPath: NSIndexPath, row: TableRowProtocolInternal) {
+        
+        let prev = sections[indexPath.section].internalRows[safe: indexPath.row - 1]
+        let next = sections[indexPath.section].internalRows[safe: indexPath.row + 1]
         
         cell.indentationLevel = row.indentationLevel
         cell.indentationWidth = row.indentationWidth
@@ -56,7 +62,11 @@ extension TableController {
             case .None:
                 cell.separatorInset.right = tableView.frame.width - cell.separatorInset.left
             default:
-                cell.separatorInset = row.separatorInset
+                if let inset = row.separatorInset {
+                    cell.separatorInset = inset
+                } else if let inset = cell.relayoutKit_defaultSeparatorInset?.value {
+                    cell.separatorInset = inset
+                }
             }
         }
         
@@ -73,7 +83,7 @@ extension TableController {
         row.setSuperview(tableView)
         row.setIndexPath(indexPath)
         
-        return cell
+        row.componentUpdate()
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -88,6 +98,7 @@ extension TableController {
         if let row = cell.relayoutKit_row?.value {
             row.didEndDisplayingCell()
             row.setRenderer(nil)
+            cell.relayoutKit_row = nil
         }
     }
     
@@ -168,18 +179,16 @@ extension TableController {
         let row = sections[indexPath.section].internalRows[indexPath.row]
         row.willBeginEditingRow()
     }
-    
-    func tableView(tableView: UITableView, didEndEditingRowAtIndexPath indexPath: NSIndexPath) {
-        
-        let row = sections[indexPath.section].internalRows[indexPath.row]
-        row.didEndEditingRow()
-    }
 }
 
 private extension TableController {
     
     func row(indexPath: NSIndexPath) -> TableRowProtocolInternal {
         return sections[indexPath.section].internalRows[indexPath.row]
+    }
+    
+    func row(safe indexPath: NSIndexPath) -> TableRowProtocolInternal? {
+        return sections[safe: indexPath.section]?.internalRows[safe: indexPath.row]
     }
 }
 
@@ -194,10 +203,14 @@ extension TableController {
     func tableView(tableView: UITableView, targetIndexPathForMoveFromRowAtIndexPath sourceIndexPath: NSIndexPath, toProposedIndexPath proposedDestinationIndexPath: NSIndexPath) -> NSIndexPath {
         
         let source = row(sourceIndexPath)
-        let destination = row(proposedDestinationIndexPath)
-        
-        if source.canMove && destination.canMove {
-            if source.willMove(to: destination) && destination.willMove(from: source) {
+        if let destination = row(safe: proposedDestinationIndexPath) {
+            if source.canMove && destination.canMove {
+                if source.willMove(to: destination) && destination.willMove(from: source) {
+                    return proposedDestinationIndexPath
+                }
+            }
+        } else {
+            if source.canMove {
                 return proposedDestinationIndexPath
             }
         }
@@ -210,5 +223,18 @@ extension TableController {
         
         sections[sourceIndexPath.section].removeAtIndex(sourceIndexPath.row)
         sections[destinationIndexPath.section].insert(source, atIndex: destinationIndexPath.row)
+        
+        for (idx, row) in sections[sourceIndexPath.section].internalRows.enumerate() {
+            let indexPath = NSIndexPath(forRow: idx, inSection: sourceIndexPath.section)
+            row.setIndexPath(indexPath)
+        }
+        for (idx, row) in sections[destinationIndexPath.section].internalRows.enumerate() {
+            let indexPath = NSIndexPath(forRow: idx, inSection: destinationIndexPath.section)
+            row.setIndexPath(indexPath)
+        }
     }
+}
+
+private func pindexPath(indexPath: NSIndexPath) -> String {
+    return "indexPath(row: \(indexPath.row), section: \(indexPath.section))"
 }

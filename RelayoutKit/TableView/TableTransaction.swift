@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum TableTransaction {
+enum TableTransaction {
     
     case Insert(TableRowProtocol, atIndex: Int, section: Int, with: UITableViewRowAnimation)
     case InsertLast(TableRowProtocol, section: Int, with: UITableViewRowAnimation)

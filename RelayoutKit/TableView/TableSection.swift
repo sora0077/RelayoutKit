@@ -14,7 +14,7 @@ public struct TableSection {
     
     public private(set) var rows: [TableRowProtocol] = []
     
-    public init() {
+    init() {
         
     }
     
@@ -43,8 +43,8 @@ public struct TableSection {
         self.rows.appendContentsOf(rows)
     }
     
-    mutating func removeAtIndex(index: Int) {
+    mutating func removeAtIndex(index: Int) -> TableRowProtocol {
         internalRows.removeAtIndex(index)
-        rows.removeAtIndex(index)
+        return rows.removeAtIndex(index)
     }
 }

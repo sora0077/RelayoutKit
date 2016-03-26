@@ -41,7 +41,7 @@ protocol TableRowProtocolInternal:
     var accessoryType: UITableViewCellAccessoryType { get }
     var selectionStyle: UITableViewCellSelectionStyle { get }
     var separatorStyle: UITableViewCellSeparatorStyle { get }
-    var separatorInset: UIEdgeInsets { get }
+    var separatorInset: UIEdgeInsets? { get }
     
     var previousSeparatorStyle: UITableViewCellSeparatorStyle? { get }
     var nextSeparatorStyle: UITableViewCellSeparatorStyle? { get }
@@ -97,7 +97,7 @@ protocol TableRowProtocolInternalEditingTableRow {
     
     
     func willBeginEditingRow()
-    func didEndEditingRow()
+//    func didEndEditingRow()
     
     func shouldIndentWhileEditing() -> Bool
     

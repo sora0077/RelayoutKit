@@ -9,6 +9,7 @@
 import Foundation
 
 private var UITableViewCell_relayoutKit_row: UInt8 = 0
+private var UITableViewCell_relayoutKit_defaultSeparatorInset: UInt8 = 0
 extension UITableViewCell {
     
     var relayoutKit_row: Wrapper<TableRowProtocolInternal>? {
@@ -17,6 +18,15 @@ extension UITableViewCell {
         }
         get {
             return objc_getAssociatedObject(self, &UITableViewCell_relayoutKit_row) as? Wrapper<TableRowProtocolInternal>
+        }
+    }
+    
+    var relayoutKit_defaultSeparatorInset: Wrapper<UIEdgeInsets>? {
+        set {
+            objc_setAssociatedObject(self, &UITableViewCell_relayoutKit_defaultSeparatorInset, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+        get {
+            return objc_getAssociatedObject(self, &UITableViewCell_relayoutKit_defaultSeparatorInset) as? Wrapper<UIEdgeInsets>
         }
     }
 }

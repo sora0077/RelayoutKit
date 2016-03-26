@@ -27,7 +27,13 @@ public class TableRow<T: UITableViewCell where T: TableRowRenderer>: NSObject, T
     
     public var canMove: Bool = false
     
-    public private(set) var indexPath: NSIndexPath?
+    public private(set) var indexPath: NSIndexPath? {
+        didSet {
+            if oldValue != indexPath && renderer != nil {
+                componentUpdate()
+            }
+        }
+    }
     public private(set) var outdated: Bool = true
     
     public var editingStyle: UITableViewCellEditingStyle = .None
@@ -39,7 +45,7 @@ public class TableRow<T: UITableViewCell where T: TableRowRenderer>: NSObject, T
     public var selectionStyle: UITableViewCellSelectionStyle = .Default
     
     public var separatorStyle: UITableViewCellSeparatorStyle = .SingleLine // SingleLineEtched is not supported
-    public var separatorInset: UIEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 0)
+    public var separatorInset: UIEdgeInsets? = nil
     
     public var previousSeparatorStyle: UITableViewCellSeparatorStyle? // if value is not nil, `separatorStyle` is ignored
     public var nextSeparatorStyle: UITableViewCellSeparatorStyle? // if value is not nil, `separatorStyle` is ignored
@@ -72,6 +78,8 @@ public class TableRow<T: UITableViewCell where T: TableRowRenderer>: NSObject, T
     public func componentDidMount() {}
     
     public func componentWillUnmount() {}
+    
+    public func componentUpdate() {}
     
     public func willDisplayCell() {}
     
@@ -106,18 +114,13 @@ public class TableRow<T: UITableViewCell where T: TableRowRenderer>: NSObject, T
     }
     
     public func willBeginEditingRow() {}
-
-    public func didEndEditingRow() {}
     
     public func editActions() -> [UITableViewRowAction]? { return nil }
     
     public func commit(editingStyle editingStyle: UITableViewCellEditingStyle) {
     
-        switch editingStyle {
-        case .Delete:
+        if case .Delete = editingStyle {
             remove()
-        default:
-            break
         }
     }
     
@@ -133,15 +136,15 @@ public extension TableRow {
         return renderer != nil
     }
     
-    func reload(animated animated: UITableViewRowAnimation = .Automatic) {
+    final func reload(animated animated: UITableViewRowAnimation = .Automatic) {
         superview?.reload(self, animation: animated)
     }
     
-    func replace(to to: TableRowProtocol, animated: UITableViewRowAnimation = .Automatic) {
+    final func replace(to to: TableRowProtocol, animated: UITableViewRowAnimation = .Automatic) {
         superview?.replace(from: self, to: to, animation: animated)
     }
     
-    func remove(animated animated: UITableViewRowAnimation = .Automatic) {
+    final func remove(animated animated: UITableViewRowAnimation = .Automatic) {
         superview?.remove(self, animation: animated)
     }
 }

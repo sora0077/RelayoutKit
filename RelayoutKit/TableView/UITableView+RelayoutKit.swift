@@ -8,13 +8,16 @@
 
 import Foundation
 
-private let defaultAnimation: UITableViewRowAnimation = .None
+private let defaultAnimation: UITableViewRowAnimation = .Automatic
 
 public extension UITableView {
     
-    func controller(responder: UIResponder?, sections: [TableSection] = [TableSection()]) {
+    func controller(responder: UIResponder?, sections: Int = 1) {
         
-        let controller = TableController(responder: responder, sections: sections)
+        let controller = TableController(
+            responder: responder,
+            sections: Array(count: sections, repeatedValue: TableSection())
+        )
         
         relayoutKit_controller = controller
         controller.tableView = self
@@ -25,12 +28,12 @@ public extension UITableView {
         relayoutKit_controller.flush()
     }
     
-    func transaction(block: () -> [TableTransaction]) {
+    internal func transaction(block: () -> [TableTransaction]) {
         
         relayoutKit_controller.transaction(block)
     }
     
-    func transaction(block: () -> TableTransaction?) {
+    internal func transaction(block: () -> TableTransaction?) {
         
         relayoutKit_controller.transaction({ block().map { [$0] } ?? [] })
     }

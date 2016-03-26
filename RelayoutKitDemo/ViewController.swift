@@ -9,9 +9,14 @@
 import UIKit
 import RelayoutKit
 
-extension UITableViewCell: TableRowRenderer {
+class ATableViewCell: UITableViewCell {
     
-    public static func register(tableView: UITableView) {
+    
+}
+
+extension ATableViewCell: TableRowRenderer {
+    
+    static func register(tableView: UITableView) {
         tableView.registerClass(self, forCellReuseIdentifier: self.identifier)
     }
 }
@@ -24,19 +29,30 @@ class TextTableRow<T: UITableViewCell where T: TableRowRenderer>: TableRow<T> {
         self.text = text
         super.init()
         
+        canMove = true
+        
         if let n = Int(text) where n % 4 == 0 {
             editingStyle = .Delete
             previousSeparatorStyle = .Some(.None)
+            
         }
+    }
+    
+    deinit {
+        print("deinit")
+    }
+    
+    override func componentUpdate() {
+        super.componentUpdate()
+        
+        renderer?.textLabel?.text = "\(text) row:\(indexPath!.row) section: \(indexPath!.section)"
     }
     
     override func componentDidMount() {
         super.componentDidMount()
         
-        renderer?.textLabel?.text = text
         print(text, " did mount")
     }
-    
     override func componentWillUnmount() {
         super.componentDidMount()
         
@@ -68,14 +84,14 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
         let tableView = UITableView(frame: self.view.bounds, style: .Plain)
-        tableView.controller(self, sections: [TableSection()])
+        tableView.controller(self, sections: 1000)
         
         (0..<1000).forEach {
-            tableView.append(TextTableRow<UITableViewCell>(text: "\($0)"), atSection: 0)
+            tableView.append(TextTableRow<ATableViewCell>(text: "\($0)"), atSection: 0)
         }
         
         
-        tableView[section: 0, row: 1] = TextTableRow<UITableViewCell>(text: "")
+        tableView[section: 0, row: 1] = TextTableRow<ATableViewCell>(text: "")
         
         self.view.addSubview(tableView)
         self.tableView = tableView

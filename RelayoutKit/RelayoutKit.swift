@@ -21,6 +21,7 @@ public protocol Component {
     func componentDidMount()
     func componentWillUnmount()
     
+    func componentUpdate()
 }
 
 public extension Component {

@@ -22,10 +22,11 @@ public extension TableRowRenderer {
         return "\(self)"
     }
     
-    static func register(tableView: UITableView) {
-        tableView.registerNib(
-            UINib(nibName: self.identifier, bundle: nil),
-            forCellReuseIdentifier: self.identifier
-        )
-    }
+//    static func register(tableView: UITableView) {
+//        tableView.registerNib(
+//            UINib(nibName: self.identifier, bundle: nil),
+//            forCellReuseIdentifier: self.identifier
+//        )
+//    }
 }
+
