@@ -47,36 +47,12 @@ extension TableController {
     
     private func updateCell(cell: UITableViewCell, indexPath: NSIndexPath, row: TableRowProtocolInternal) {
         
-        let prev = sections[indexPath.section].internalRows[safe: indexPath.row - 1]
-        let next = sections[indexPath.section].internalRows[safe: indexPath.row + 1]
         
         cell.indentationLevel = row.indentationLevel
         cell.indentationWidth = row.indentationWidth
         cell.accessoryType = row.accessoryType
         cell.selectionStyle = row.selectionStyle
         cell.selected = row.selected
-        
-        func applySeparatorStyle(style: UITableViewCellSeparatorStyle) {
-            
-            switch style {
-            case .None:
-                cell.separatorInset.right = tableView.frame.width - cell.separatorInset.left
-            default:
-                if let inset = row.separatorInset {
-                    cell.separatorInset = inset
-                } else if let inset = cell.relayoutKit_defaultSeparatorInset?.value {
-                    cell.separatorInset = inset
-                }
-            }
-        }
-        
-        if let style = prev?.nextSeparatorStyle {
-            applySeparatorStyle(style)
-        } else if let style = next?.previousSeparatorStyle {
-            applySeparatorStyle(style)
-        } else {
-            applySeparatorStyle(row.separatorStyle)
-        }
         
         cell.relayoutKit_row = Wrapper(row)
         row.setRenderer(cell)
@@ -89,6 +65,29 @@ extension TableController {
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         
         if let row = cell.relayoutKit_row?.value {
+            func applySeparatorStyle(style: UITableViewCellSeparatorStyle) {
+                
+                switch style {
+                case .None:
+                    cell.separatorInset.right = tableView.frame.width - cell.separatorInset.left
+                default:
+                    if let inset = row.separatorInset {
+                        cell.separatorInset = inset
+                    } else if let inset = cell.relayoutKit_defaultSeparatorInset?.value {
+                        cell.separatorInset = inset
+                    }
+                }
+            }
+            let prev = sections[indexPath.section].internalRows[safe: indexPath.row - 1]
+            let next = sections[indexPath.section].internalRows[safe: indexPath.row + 1]
+            
+            if let style = prev?.nextSeparatorStyle {
+                applySeparatorStyle(style)
+            } else if let style = next?.previousSeparatorStyle {
+                applySeparatorStyle(style)
+            } else {
+                applySeparatorStyle(row.separatorStyle)
+            }
             row.willDisplayCell()
         }
     }

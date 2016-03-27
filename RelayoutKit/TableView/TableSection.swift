@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct TableSection {
+public final class TableSection {
  
     private(set) var internalRows: [TableRowProtocolInternal] = []
     
@@ -28,22 +28,22 @@ public struct TableSection {
         }
     }
     
-    mutating func append(row: TableRowProtocol) {
+    func append(row: TableRowProtocol) {
         internalRows.append(row as! TableRowProtocolInternal)
         rows.append(row)
     }
     
-    mutating func insert(row: TableRowProtocol, atIndex index: Int) {
+    func insert(row: TableRowProtocol, atIndex index: Int) {
         internalRows.insert(row as! TableRowProtocolInternal, atIndex: index)
         rows.insert(row, atIndex: index)
     }
     
-    mutating func extend(rows: [TableRowProtocol]) {
+    func extend(rows: [TableRowProtocol]) {
         internalRows.appendContentsOf(rows.map { $0 as! TableRowProtocolInternal })
         self.rows.appendContentsOf(rows)
     }
     
-    mutating func removeAtIndex(index: Int) -> TableRowProtocol {
+    func removeAtIndex(index: Int) -> TableRowProtocol {
         internalRows.removeAtIndex(index)
         return rows.removeAtIndex(index)
     }

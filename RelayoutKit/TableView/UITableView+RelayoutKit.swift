@@ -10,13 +10,22 @@ import Foundation
 
 private let defaultAnimation: UITableViewRowAnimation = .Automatic
 
+private extension Array {
+    
+    init(count: Int, @autoclosure repeatedObject: () -> Element) {
+        self.init((0..<count).map { _ in
+            repeatedObject()
+        })
+    }
+}
+
 public extension UITableView {
     
     func controller(responder: UIResponder?, sections: Int = 1) {
         
         let controller = TableController(
             responder: responder,
-            sections: Array(count: sections, repeatedValue: TableSection())
+            sections: Array(count: sections, repeatedObject: TableSection())
         )
         
         relayoutKit_controller = controller
@@ -84,31 +93,37 @@ public extension UITableView {
         }
     }
     
-    subscript(section section: Int, row row: Int) -> TableRowProtocol {
+    subscript(section section: Int, row row: Int) -> TableRowProtocol? {
         set {
             self[section: section, row: row, animation: .None] = newValue
         }
         get {
-            return relayoutKit_controller.sections[section].internalRows[row]
+            return self[section: section, row: row, animation: .None]
         }
     }
     
-    subscript(section section: Int, row row: Int, animation animation: UITableViewRowAnimation) -> TableRowProtocol {
+    subscript(section section: Int, row row: Int, animation animation: UITableViewRowAnimation) -> TableRowProtocol? {
         set {
-            if relayoutKit_controller.sections[section].rows.count == row {
-                insert(newValue, atIndex: row, section: section)
+            if let newValue = newValue {
+                transaction { () -> TableTransaction? in
+                    if self.relayoutKit_controller.sections[section].rows.count == row {
+                        return .Insert(newValue, atIndex: row, section: section, with: animation)
+                    } else {
+                        return .Replacement(newValue, atIndex: row, section: section, with: animation)
+                    }
+                }
             } else {
                 transaction {
-                    .Replacement(newValue, atIndex: row, section: section, with: animation)
+                    .RemoveIndex(index: row, section: section, with: animation)
                 }
             }
         }
         get {
-            return relayoutKit_controller.sections[section].internalRows[row]
+            return relayoutKit_controller.sections[safe: section]?.internalRows[safe: row]
         }
     }
     
-    subscript(indexPath indexPath: NSIndexPath) -> TableRowProtocol {
+    subscript(indexPath indexPath: NSIndexPath) -> TableRowProtocol? {
         set {
             self[section: indexPath.section, row: indexPath.row] = newValue
         }

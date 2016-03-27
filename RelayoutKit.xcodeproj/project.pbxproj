@@ -12,33 +12,33 @@
 		D91CAFD31BA0B1EA00064013 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D91CAFD11BA0B1EA00064013 /* Main.storyboard */; };
 		D91CAFD51BA0B1EA00064013 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D91CAFD41BA0B1EA00064013 /* Assets.xcassets */; };
 		D91CAFD81BA0B1EA00064013 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D91CAFD61BA0B1EA00064013 /* LaunchScreen.storyboard */; };
-		D91CAFDD1BA0B1F800064013 /* RelayoutKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D972C2641BA05F7700D660A7 /* RelayoutKit.framework */; };
-		D91CAFDE1BA0B1F800064013 /* RelayoutKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D972C2641BA05F7700D660A7 /* RelayoutKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D932FDF01BA099F3003704FD /* TableTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D932FDEF1BA099F3003704FD /* TableTransaction.swift */; settings = {ASSET_TAGS = (); }; };
+		D932FDF01BA099F3003704FD /* TableTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D932FDEF1BA099F3003704FD /* TableTransaction.swift */; };
 		D972C2681BA05F7700D660A7 /* RelayoutKit.h in Headers */ = {isa = PBXBuildFile; fileRef = D972C2671BA05F7700D660A7 /* RelayoutKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D972C26F1BA05F7700D660A7 /* RelayoutKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D972C2641BA05F7700D660A7 /* RelayoutKit.framework */; settings = {ASSET_TAGS = (); }; };
+		D972C26F1BA05F7700D660A7 /* RelayoutKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D972C2641BA05F7700D660A7 /* RelayoutKit.framework */; };
 		D972C2741BA05F7700D660A7 /* RelayoutKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D972C2731BA05F7700D660A7 /* RelayoutKitTests.swift */; };
-		D972C2801BA05FA900D660A7 /* RelayoutKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D972C27F1BA05FA900D660A7 /* RelayoutKit.swift */; settings = {ASSET_TAGS = (); }; };
-		D972C2821BA0613D00D660A7 /* TableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D972C2811BA0613D00D660A7 /* TableRow.swift */; settings = {ASSET_TAGS = (); }; };
-		D972C2851BA065FA00D660A7 /* TableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D972C2841BA065FA00D660A7 /* TableController.swift */; settings = {ASSET_TAGS = (); }; };
-		D972C2871BA0661100D660A7 /* TableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D972C2861BA0661100D660A7 /* TableSection.swift */; settings = {ASSET_TAGS = (); }; };
-		D972C2891BA07AA900D660A7 /* TableRowRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D972C2881BA07AA900D660A7 /* TableRowRenderer.swift */; settings = {ASSET_TAGS = (); }; };
-		D972C28B1BA07AD100D660A7 /* TableRowProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D972C28A1BA07AD100D660A7 /* TableRowProtocol.swift */; settings = {ASSET_TAGS = (); }; };
-		D972C28D1BA07B0A00D660A7 /* UITableViewCell+RelayoutKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D972C28C1BA07B0A00D660A7 /* UITableViewCell+RelayoutKit.swift */; settings = {ASSET_TAGS = (); }; };
-		D97B120D1BA08AD3008A62F6 /* TableController+Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D97B120C1BA08AD3008A62F6 /* TableController+Cell.swift */; settings = {ASSET_TAGS = (); }; };
-		D97B120F1BA08C96008A62F6 /* TableController+UIScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D97B120E1BA08C96008A62F6 /* TableController+UIScrollViewDelegate.swift */; settings = {ASSET_TAGS = (); }; };
-		D97B12111BA09050008A62F6 /* UITableView+RelayoutKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D97B12101BA09050008A62F6 /* UITableView+RelayoutKit.swift */; settings = {ASSET_TAGS = (); }; };
+		D972C2801BA05FA900D660A7 /* RelayoutKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D972C27F1BA05FA900D660A7 /* RelayoutKit.swift */; };
+		D972C2821BA0613D00D660A7 /* TableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D972C2811BA0613D00D660A7 /* TableRow.swift */; };
+		D972C2851BA065FA00D660A7 /* TableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D972C2841BA065FA00D660A7 /* TableController.swift */; };
+		D972C2871BA0661100D660A7 /* TableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D972C2861BA0661100D660A7 /* TableSection.swift */; };
+		D972C2891BA07AA900D660A7 /* TableRowRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D972C2881BA07AA900D660A7 /* TableRowRenderer.swift */; };
+		D972C28B1BA07AD100D660A7 /* TableRowProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D972C28A1BA07AD100D660A7 /* TableRowProtocol.swift */; };
+		D972C28D1BA07B0A00D660A7 /* UITableViewCell+RelayoutKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D972C28C1BA07B0A00D660A7 /* UITableViewCell+RelayoutKit.swift */; };
+		D97B120D1BA08AD3008A62F6 /* TableController+Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D97B120C1BA08AD3008A62F6 /* TableController+Cell.swift */; };
+		D97B120F1BA08C96008A62F6 /* TableController+UIScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D97B120E1BA08C96008A62F6 /* TableController+UIScrollViewDelegate.swift */; };
+		D97B12111BA09050008A62F6 /* UITableView+RelayoutKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D97B12101BA09050008A62F6 /* UITableView+RelayoutKit.swift */; };
+		D994B5B81CA7A6A800C1414D /* RelayoutKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D972C2641BA05F7700D660A7 /* RelayoutKit.framework */; };
+		D994B5B91CA7A6A800C1414D /* RelayoutKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D972C2641BA05F7700D660A7 /* RelayoutKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		D91CAFDF1BA0B1F800064013 /* PBXContainerItemProxy */ = {
+		D972C2701BA05F7700D660A7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D972C25B1BA05F7700D660A7 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = D972C2631BA05F7700D660A7;
 			remoteInfo = RelayoutKit;
 		};
-		D972C2701BA05F7700D660A7 /* PBXContainerItemProxy */ = {
+		D994B5BA1CA7A6A800C1414D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D972C25B1BA05F7700D660A7 /* Project object */;
 			proxyType = 1;
@@ -48,13 +48,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		D91CAFE11BA0B1F800064013 /* Embed Frameworks */ = {
+		D994B5BC1CA7A6A800C1414D /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D91CAFDE1BA0B1F800064013 /* RelayoutKit.framework in Embed Frameworks */,
+				D994B5B91CA7A6A800C1414D /* RelayoutKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -94,7 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D91CAFDD1BA0B1F800064013 /* RelayoutKit.framework in Frameworks */,
+				D994B5B81CA7A6A800C1414D /* RelayoutKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -208,12 +208,12 @@
 				D91CAFC71BA0B1EA00064013 /* Sources */,
 				D91CAFC81BA0B1EA00064013 /* Frameworks */,
 				D91CAFC91BA0B1EA00064013 /* Resources */,
-				D91CAFE11BA0B1F800064013 /* Embed Frameworks */,
+				D994B5BC1CA7A6A800C1414D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				D91CAFE01BA0B1F800064013 /* PBXTargetDependency */,
+				D994B5BB1CA7A6A800C1414D /* PBXTargetDependency */,
 			);
 			name = RelayoutKitDemo;
 			productName = RelayoutKitDemo;
@@ -363,15 +363,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		D91CAFE01BA0B1F800064013 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D972C2631BA05F7700D660A7 /* RelayoutKit */;
-			targetProxy = D91CAFDF1BA0B1F800064013 /* PBXContainerItemProxy */;
-		};
 		D972C2711BA05F7700D660A7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D972C2631BA05F7700D660A7 /* RelayoutKit */;
 			targetProxy = D972C2701BA05F7700D660A7 /* PBXContainerItemProxy */;
+		};
+		D994B5BB1CA7A6A800C1414D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D972C2631BA05F7700D660A7 /* RelayoutKit */;
+			targetProxy = D994B5BA1CA7A6A800C1414D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -399,6 +399,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = RelayoutKitDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -411,6 +412,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = RelayoutKitDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

@@ -13,6 +13,7 @@ enum TableTransaction {
     case Insert(TableRowProtocol, atIndex: Int, section: Int, with: UITableViewRowAnimation)
     case InsertLast(TableRowProtocol, section: Int, with: UITableViewRowAnimation)
     
+    case RemoveIndex(index: Int, section: Int, with: UITableViewRowAnimation)
     case Remove(TableRowProtocol, with: UITableViewRowAnimation)
     case RemoveLast(section: Int, with: UITableViewRowAnimation)
     

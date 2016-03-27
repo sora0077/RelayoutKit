@@ -86,12 +86,15 @@ class ViewController: UIViewController {
         let tableView = UITableView(frame: self.view.bounds, style: .Plain)
         tableView.controller(self, sections: 1000)
         
-        (0..<1000).forEach {
-            tableView.append(TextTableRow<ATableViewCell>(text: "\($0)"), atSection: 0)
-        }
+        
+        tableView.extend((0..<1000).map {
+            TextTableRow<ATableViewCell>(text: "\($0)")
+        }, atSetcion: 0)
         
         
         tableView[section: 0, row: 1] = TextTableRow<ATableViewCell>(text: "")
+        tableView[section: 0, row: 1] = nil
+        tableView[section: 0, row: 5] = nil
         
         self.view.addSubview(tableView)
         self.tableView = tableView

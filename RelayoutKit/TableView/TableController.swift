@@ -92,20 +92,25 @@ private extension TableController {
             tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: section)], withRowAnimation: animation)
         }
         
-        tableView.beginUpdates()
+        self.tableView.beginUpdates()
         for t in transactions {
             switch t {
             case let .Insert(row, atIndex: index, section: section, with: animation):
                 insertRow(row, atIndex: index, section: section, animation: animation)
             case let .InsertLast(row, section: section, with: animation):
-                let index = sections[section].rows.count
+                let index = self.sections[section].rows.count
                 insertRow(row, atIndex: index, section: section, animation: animation)
                 
             case let .Replacement(row, atIndex: index, section: section, with: animation):
                 reloadRow(row, atIndex: index, section: section, animation: animation)
             case let .ReplacementLast(row, section: section, with: animation):
-                let index = sections[section].rows.count
+                let index = self.sections[section].rows.count
                 reloadRow(row, atIndex: index, section: section, animation: animation)
+            
+            case let .RemoveIndex(index, section: section, with: animation):
+                let row = self.sections[section].internalRows[safe: index]
+                deleteRow(index, section: section, animation: animation)
+                row?.setOutdated(true)
                 
             case let .Remove(row, with: animation):
                 if let indexPath = row.indexPath {
@@ -114,7 +119,7 @@ private extension TableController {
                     row.setOutdated(true)
                 }
             case let .RemoveLast(section: section, with: animation):
-                let row = sections[section].rows.last
+                let row = self.sections[section].rows.last
                 if let indexPath = row?.indexPath {
                     deleteRow(indexPath.row, section: indexPath.section, animation: animation)
                     let row = row as! TableRowProtocolInternal
@@ -122,7 +127,7 @@ private extension TableController {
                 }
                 
             case let .Setting(rows, section: section, removal: removal, insertion: insertion):
-                for idx in 0..<sections[section].rows.count {
+                for idx in 0..<self.sections[section].rows.count {
                     deleteRow(idx, section: section, animation: removal)
                 }
                 for (index, row) in rows.enumerate() {
@@ -130,7 +135,9 @@ private extension TableController {
                 }
             }
         }
-        tableView.endUpdates()
+        self.tableView.endUpdates()
+        dispatch_async(dispatch_get_main_queue()) {
+        }
         
         return true
     }

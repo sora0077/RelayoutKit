@@ -8,10 +8,12 @@
 
 import Foundation
 
+
 private var UITableViewCell_relayoutKit_row: UInt8 = 0
 private var UITableViewCell_relayoutKit_defaultSeparatorInset: UInt8 = 0
 extension UITableViewCell {
     
+    private static var relayoutKit_row: UInt8 = 0
     var relayoutKit_row: Wrapper<TableRowProtocolInternal>? {
         set {
             objc_setAssociatedObject(self, &UITableViewCell_relayoutKit_row, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
