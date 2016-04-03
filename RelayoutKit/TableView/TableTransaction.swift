@@ -16,6 +16,7 @@ enum TableTransaction {
     case RemoveIndex(index: Int, section: Int, with: UITableViewRowAnimation)
     case Remove(TableRowProtocol, with: UITableViewRowAnimation)
     case RemoveLast(section: Int, with: UITableViewRowAnimation)
+    case RemoveAll(section: Int?, with: UITableViewRowAnimation)
     
     case Replacement(TableRowProtocol, atIndex: Int, section: Int, with: UITableViewRowAnimation)
     case ReplacementLast(TableRowProtocol, section: Int, with: UITableViewRowAnimation)

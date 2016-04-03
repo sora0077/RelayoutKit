@@ -92,6 +92,22 @@ private extension TableController {
             tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: section)], withRowAnimation: animation)
         }
         
+        func deleteRows(section section: Int?, animation: UITableViewRowAnimation) {
+            
+            if let section = section {
+                sections.removeAtIndex(section)
+                tableView.deleteSections(NSIndexSet(index: section), withRowAnimation: animation)
+            } else {
+                let num = sections.count
+                sections.removeAll()
+                let indexSet = NSMutableIndexSet()
+                for i in 0..<num {
+                    indexSet.addIndex(i)
+                }
+                tableView.deleteSections(indexSet, withRowAnimation: animation)
+            }
+        }
+        
         self.tableView.beginUpdates()
         for t in transactions {
             switch t {
@@ -125,6 +141,8 @@ private extension TableController {
                     let row = row as! TableRowProtocolInternal
                     row.setOutdated(true)
                 }
+            case let .RemoveAll(section: section, with: animation):
+                deleteRows(section: section, animation: animation)
                 
             case let .Setting(rows, section: section, removal: removal, insertion: insertion):
                 for idx in 0..<self.sections[section].rows.count {

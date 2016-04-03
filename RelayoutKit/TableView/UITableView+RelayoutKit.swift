@@ -132,6 +132,11 @@ public extension UITableView {
         }
     }
     
+    func removeAll(section section: Int? = nil, animation: UITableViewRowAnimation = defaultAnimation) {
+        transaction {
+            .RemoveAll(section: section, with: animation)
+        }
+    }
 }
 
 private var UITableView_relayoutKit_controller: UInt8 = 0
