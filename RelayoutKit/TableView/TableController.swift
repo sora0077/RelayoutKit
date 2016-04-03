@@ -104,7 +104,10 @@ private extension TableController {
                 for i in 0..<num {
                     indexSet.addIndex(i)
                 }
-                tableView.deleteSections(indexSet, withRowAnimation: animation)
+                tableView.deleteSections(indexSet, withRowAnimation: animation == .Automatic ? .Top : animation)
+                
+                sections.append(TableSection())
+                tableView.insertSections(NSIndexSet(index: 0), withRowAnimation: .None)
             }
         }
         
