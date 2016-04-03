@@ -36,9 +36,6 @@ extension TableController {
         }
         
         let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
-        if cell.relayoutKit_defaultSeparatorInset == nil {
-            cell.relayoutKit_defaultSeparatorInset = Wrapper(cell.separatorInset)
-        }
         
         updateCell(cell, indexPath: indexPath, row: row)
         
@@ -46,7 +43,6 @@ extension TableController {
     }
     
     private func updateCell(cell: UITableViewCell, indexPath: NSIndexPath, row: TableRowProtocolInternal) {
-        
         
         cell.indentationLevel = row.indentationLevel
         cell.indentationWidth = row.indentationWidth
@@ -64,6 +60,9 @@ extension TableController {
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         
+        if cell.relayoutKit_defaultSeparatorInset == nil {
+            cell.relayoutKit_defaultSeparatorInset = Wrapper(cell.separatorInset)
+        }
         if let row = cell.relayoutKit_row?.value {
             func applySeparatorStyle(style: UITableViewCellSeparatorStyle) {
                 

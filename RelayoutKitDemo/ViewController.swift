@@ -61,11 +61,6 @@ class TextTableRow<T: UITableViewCell where T: TableRowRenderer>: TableRow<T> {
     
     override func willDisplayCell() {
         super.willDisplayCell()
-        
-//        renderer?.contentView.transform = CGAffineTransformMakeTranslation(0, -50)
-//        UIView.animateWithDuration(0.5) {
-//            renderer?.contentView.transform = CGAffineTransformIdentity
-//        }
     }
     
     override func didSelect(indexPath: NSIndexPath) {

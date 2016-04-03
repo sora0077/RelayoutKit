@@ -3,11 +3,11 @@ Pod::Spec.new do |s|
   s.platform = :ios
   s.ios.deployment_target = '8.0'
   s.name         = "RelayoutKit"
-  s.version      = "0.1.0"
+  s.version      = "0.1.1"
   s.summary      = "RelayoutKit."
 
   s.description  = <<-DESC
-                   API Client using Alamofire and RxSwift
+                   TableView helper library.
                    DESC
 
   s.homepage     = "https://github.com/sora0077/RelayoutKit"
